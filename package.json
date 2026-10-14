@@ -1,6 +1,6 @@
 {
   "name": "gladys-buienradar",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Buienradar (Netherlands and Belgium) weather provider for Gladys Assistant: current weather from the nearest station, 5-day forecast, 2-hour rain forecast, rain radar image, rain scene triggers.",
   "type": "module",

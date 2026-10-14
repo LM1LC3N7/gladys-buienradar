@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-14
+
 ### Added
 
 - Buienradar weather provider for the Netherlands and Belgium: the current
@@ -31,3 +33,6 @@ the notes of the version's GitHub Release.
 - Dashboard widget "Rain next 2 hours": next rain, peak, total and the
   5-minute bars, credited "Data: Buienradar.nl".
 - "Test Buienradar" button: the station and the rain forecast of each house.
+
+[Unreleased]: https://github.com/LM1LC3N7/gladys-buienradar/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/LM1LC3N7/gladys-buienradar/releases/tag/v0.1.1
