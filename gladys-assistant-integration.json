@@ -1,0 +1,320 @@
+{
+  "manifest_version": 1,
+  "type": "weather",
+  "name": "Buienradar",
+  "description": {
+    "en": "Unofficial connector: Buienradar weather, 2-hour rain forecast and rain radar (NL, BE).",
+    "fr": "Connecteur non officiel : météo Buienradar, pluie à 2 heures et radar de pluie (NL, BE)."
+  },
+  "version": "0.1.0",
+  "docker_image": "ghcr.io/lm1lc3n7/gladys-buienradar:0.1.0",
+  "gladys_version": ">=5.1.0",
+  "cover_image": "https://raw.githubusercontent.com/LM1LC3N7/gladys-buienradar/main/cover.png",
+  "categories": ["environment"],
+  "transports": ["cloud"],
+  "location": true,
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": { "en": "Buienradar weather in Gladys", "fr": "La météo Buienradar dans Gladys" },
+      "description": {
+        "en": "Unofficial connector, not affiliated with Buienradar. It makes Buienradar the weather provider of Gladys for the Netherlands and Belgium: the current weather of the nearest Buienradar station, the 5-day forecast and the rain radar maps, nothing to enter, no account, no key. With the location of your house, it also watches the 2-hour rain forecast (every 5 minutes) for the \"rain expected\" and \"rain stopped\" scene triggers, a scene action and a dashboard widget. Data: Buienradar.nl, free for non-commercial use with attribution.",
+        "fr": "Connecteur non officiel, sans lien avec Buienradar. Il fait de Buienradar le fournisseur météo de Gladys pour les Pays-Bas et la Belgique : la météo actuelle de la station Buienradar la plus proche, les prévisions à 5 jours et les cartes radar de pluie, rien à saisir, ni compte ni clé. Avec la position de votre maison, il suit aussi la prévision de pluie à 2 heures (toutes les 5 minutes) pour les déclencheurs de scène « pluie attendue » et « pluie arrêtée », une action de scène et un widget. Données : Buienradar.nl, libres pour un usage non commercial avec mention de la source."
+      },
+      "links": [
+        {
+          "url": "https://www.buienradar.nl/",
+          "label": {
+            "en": "Buienradar.nl (the data source)",
+            "fr": "Buienradar.nl (la source des données)"
+          }
+        },
+        {
+          "url": "https://github.com/LM1LC3N7/gladys-buienradar/blob/main/docs/fr.md",
+          "label": { "en": "Guide (French)", "fr": "Guide (français)" }
+        },
+        {
+          "url": "https://github.com/LM1LC3N7/gladys-buienradar/blob/main/docs/en.md",
+          "label": { "en": "Guide (English)", "fr": "Guide (anglais)" }
+        }
+      ]
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "label": { "en": "Language of the scene texts", "fr": "Langue des textes des scènes" },
+      "description": {
+        "en": "The summaries sent to the scenes (rain expected, rain stopped, rain forecast). Buienradar writes in Dutch only: in English and French the texts are built from the forecast itself.",
+        "fr": "Les résumés envoyés aux scènes (pluie attendue, pluie arrêtée, prévision de pluie). Buienradar n'écrit qu'en néerlandais : en anglais et en français, les textes sont construits à partir de la prévision elle-même."
+      },
+      "required": false,
+      "default": "en",
+      "options": [
+        { "value": "en", "label": { "en": "English", "fr": "Anglais" } },
+        { "value": "fr", "label": { "en": "French", "fr": "Français" } },
+        { "value": "nl", "label": { "en": "Dutch", "fr": "Néerlandais" } }
+      ]
+    },
+    {
+      "key": "rain_poll_interval",
+      "type": "number",
+      "label": {
+        "en": "Rain check interval (minutes)",
+        "fr": "Intervalle de vérification de la pluie (minutes)"
+      },
+      "description": {
+        "en": "How often the 2-hour rain forecast of each house is read for the rain triggers. Buienradar updates it every 5 minutes: 5 is the minimum.",
+        "fr": "Fréquence de lecture de la prévision de pluie à 2 heures de chaque maison, pour les déclencheurs de pluie. Buienradar la met à jour toutes les 5 minutes : 5 est le minimum."
+      },
+      "required": false,
+      "default": 5,
+      "min": 5,
+      "max": 60
+    },
+    {
+      "key": "radar_image",
+      "type": "boolean",
+      "label": {
+        "en": "Rain radar in the weather widget",
+        "fr": "Radar de pluie dans le widget météo"
+      },
+      "description": {
+        "en": "Offers the Buienradar radar maps (Netherlands and Belgium) to the weather widget of Gladys, shown when its \"provider images\" option is on.",
+        "fr": "Propose les cartes radar de Buienradar (Pays-Bas et Belgique) au widget météo de Gladys, affichées quand son option « images du fournisseur » est activée."
+      },
+      "required": false,
+      "default": true
+    }
+  ],
+  "actions": [
+    {
+      "key": "test_connection",
+      "timeout_seconds": 30,
+      "label": { "en": "Test Buienradar", "fr": "Tester Buienradar" },
+      "description": {
+        "en": "Reads the feed and the rain forecast of each house, and says which station is used.",
+        "fr": "Lit le flux et la prévision de pluie de chaque maison, et indique la station utilisée."
+      }
+    }
+  ],
+  "widgets": [
+    {
+      "key": "rain_forecast",
+      "label": { "en": "Rain next 2 hours", "fr": "Pluie des 2 prochaines heures" },
+      "description": {
+        "en": "The Buienradar rain forecast of a house, every 5 minutes: next rain, peak, total.",
+        "fr": "La prévision de pluie Buienradar d'une maison, toutes les 5 minutes : prochaine pluie, pic, cumul."
+      },
+      "icon": "cloud-rain",
+      "settings": [
+        {
+          "key": "house",
+          "type": "string",
+          "required": false,
+          "label": { "en": "House", "fr": "Maison" },
+          "description": {
+            "en": "Name of the house in Gladys. Empty: the first located house.",
+            "fr": "Nom de la maison dans Gladys. Vide : la première maison localisée."
+          },
+          "placeholder": { "en": "e.g. Home", "fr": "ex. Maison" }
+        }
+      ]
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "rain_expected",
+      "label": { "en": "Rain expected (Buienradar)", "fr": "Pluie attendue (Buienradar)" },
+      "description": {
+        "en": "The Buienradar radar forecast now shows rain at a house within the chosen minutes. Once per rain episode, not at every check.",
+        "fr": "La prévision radar de Buienradar annonce désormais de la pluie sur une maison dans les minutes choisies. Une fois par épisode de pluie, pas à chaque vérification."
+      },
+      "fields": [
+        {
+          "key": "minutes",
+          "type": "select",
+          "required": true,
+          "label": { "en": "Rain within", "fr": "Pluie d'ici" },
+          "options": [
+            { "value": "5", "label": { "en": "5 minutes", "fr": "5 minutes" } },
+            { "value": "10", "label": { "en": "10 minutes", "fr": "10 minutes" } },
+            { "value": "15", "label": { "en": "15 minutes", "fr": "15 minutes" } },
+            { "value": "30", "label": { "en": "30 minutes", "fr": "30 minutes" } },
+            { "value": "60", "label": { "en": "1 hour", "fr": "1 heure" } },
+            { "value": "120", "label": { "en": "2 hours", "fr": "2 heures" } }
+          ]
+        },
+        {
+          "key": "intensity",
+          "type": "select",
+          "required": true,
+          "label": { "en": "Minimum intensity", "fr": "Intensité minimale" },
+          "options": [
+            {
+              "value": "light",
+              "label": { "en": "Any rain (0.1 mm/h)", "fr": "Toute pluie (0,1 mm/h)" }
+            },
+            {
+              "value": "moderate",
+              "label": { "en": "Moderate rain (2.5 mm/h)", "fr": "Pluie modérée (2,5 mm/h)" }
+            },
+            {
+              "value": "heavy",
+              "label": { "en": "Heavy rain (10 mm/h)", "fr": "Forte pluie (10 mm/h)" }
+            }
+          ]
+        },
+        {
+          "key": "house",
+          "type": "string",
+          "required": false,
+          "label": { "en": "House", "fr": "Maison" },
+          "description": {
+            "en": "Exact name of the house in Gladys. Empty: every house.",
+            "fr": "Nom exact de la maison dans Gladys. Vide : toutes les maisons."
+          },
+          "placeholder": { "en": "e.g. Home", "fr": "ex. Maison" }
+        }
+      ],
+      "variables": [
+        { "key": "house", "type": "string", "label": { "en": "House", "fr": "Maison" } },
+        {
+          "key": "minutes",
+          "type": "string",
+          "label": { "en": "Threshold (minutes)", "fr": "Seuil (minutes)" }
+        },
+        {
+          "key": "intensity",
+          "type": "string",
+          "label": { "en": "Intensity", "fr": "Intensité" }
+        },
+        {
+          "key": "starts_in",
+          "type": "number",
+          "label": { "en": "Minutes before the rain", "fr": "Minutes avant la pluie" }
+        },
+        {
+          "key": "start_time",
+          "type": "string",
+          "label": { "en": "Start time (HH:MM)", "fr": "Heure de début (HH:MM)" }
+        },
+        {
+          "key": "starts_at",
+          "type": "string",
+          "label": { "en": "Start (ISO)", "fr": "Début (ISO)" }
+        },
+        {
+          "key": "max_intensity",
+          "type": "number",
+          "label": { "en": "Peak in 2 hours (mm/h)", "fr": "Pic sur 2 heures (mm/h)" }
+        },
+        {
+          "key": "total_mm",
+          "type": "number",
+          "label": { "en": "Total in 2 hours (mm)", "fr": "Cumul sur 2 heures (mm)" }
+        },
+        { "key": "summary", "type": "string", "label": { "en": "Summary", "fr": "Résumé" } }
+      ]
+    },
+    {
+      "key": "rain_stopped",
+      "label": { "en": "Rain stopped (Buienradar)", "fr": "Pluie arrêtée (Buienradar)" },
+      "description": {
+        "en": "It was raining at a house and the Buienradar radar now shows at least 15 dry minutes.",
+        "fr": "Il pleuvait sur une maison et le radar de Buienradar annonce désormais au moins 15 minutes sèches."
+      },
+      "fields": [
+        {
+          "key": "house",
+          "type": "string",
+          "required": false,
+          "label": { "en": "House", "fr": "Maison" },
+          "description": {
+            "en": "Exact name of the house in Gladys. Empty: every house.",
+            "fr": "Nom exact de la maison dans Gladys. Vide : toutes les maisons."
+          },
+          "placeholder": { "en": "e.g. Home", "fr": "ex. Maison" }
+        }
+      ],
+      "variables": [
+        { "key": "house", "type": "string", "label": { "en": "House", "fr": "Maison" } },
+        {
+          "key": "next_rain_in",
+          "type": "number",
+          "label": {
+            "en": "Minutes before the next rain (empty: dry 2 hours)",
+            "fr": "Minutes avant la prochaine pluie (vide : sec 2 heures)"
+          }
+        },
+        { "key": "summary", "type": "string", "label": { "en": "Summary", "fr": "Résumé" } }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "get_rain_forecast",
+      "label": {
+        "en": "Buienradar rain in the next 2 hours",
+        "fr": "Pluie Buienradar des 2 prochaines heures"
+      },
+      "description": {
+        "en": "The 2-hour rain forecast of a house, for a message or a condition that follows.",
+        "fr": "La prévision de pluie à 2 heures d'une maison, pour un message ou une condition qui suit."
+      },
+      "timeout_seconds": 20,
+      "fields": [
+        {
+          "key": "house",
+          "type": "string",
+          "required": false,
+          "label": { "en": "House", "fr": "Maison" },
+          "description": {
+            "en": "Name of the house in Gladys. Empty: the first located house.",
+            "fr": "Nom de la maison dans Gladys. Vide : la première maison localisée."
+          },
+          "placeholder": { "en": "e.g. Home", "fr": "ex. Maison" }
+        }
+      ],
+      "outputs": [
+        { "key": "house", "type": "string", "label": { "en": "House", "fr": "Maison" } },
+        {
+          "key": "dry",
+          "type": "boolean",
+          "label": { "en": "Dry for 2 hours", "fr": "Sec pendant 2 heures" }
+        },
+        {
+          "key": "raining",
+          "type": "boolean",
+          "label": { "en": "Raining now", "fr": "Il pleut maintenant" }
+        },
+        {
+          "key": "minutes_until_rain",
+          "type": "number",
+          "label": { "en": "Minutes until the rain", "fr": "Minutes avant la pluie" }
+        },
+        {
+          "key": "rain_time",
+          "type": "string",
+          "label": { "en": "Rain from (HH:MM)", "fr": "Pluie à partir de (HH:MM)" }
+        },
+        {
+          "key": "minutes_until_dry",
+          "type": "number",
+          "label": { "en": "Minutes until dry", "fr": "Minutes avant le sec" }
+        },
+        {
+          "key": "max_intensity",
+          "type": "number",
+          "label": { "en": "Peak intensity (mm/h)", "fr": "Intensité maximale (mm/h)" }
+        },
+        {
+          "key": "total_mm",
+          "type": "number",
+          "label": { "en": "Total in 2 hours (mm)", "fr": "Cumul sur 2 heures (mm)" }
+        },
+        { "key": "summary", "type": "string", "label": { "en": "Summary", "fr": "Résumé" } }
+      ]
+    }
+  ]
+}
