@@ -33,7 +33,7 @@ service built into Gladys. The weather widget can also pick it explicitly.
 
 ## Setup
 
-1. Install the integration from the Gladys catalog (Gladys 5.1 or newer)
+1. Install the integration from the Gladys catalog (Gladys 5.3 or newer)
    and accept the access to the **location of your houses**: the rain
    triggers, the scene action and the widget watch them.
 2. Check that your house is placed on the map (**Settings → Houses**).

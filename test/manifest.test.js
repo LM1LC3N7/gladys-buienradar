@@ -43,7 +43,7 @@ test('the store basics', () => {
   assert.equal(manifest.manifest_version, 1);
   assert.equal(manifest.type, 'weather');
   assert.equal(manifest.location, true, 'the rain watchers need the houses');
-  assert.match(manifest.gladys_version, />=5\.1\.0/);
+  assert.match(manifest.gladys_version, />=5\.3\.0/);
   assert.equal(manifest.docker_image, `ghcr.io/lm1lc3n7/gladys-buienradar:${manifest.version}`);
   assert.equal(manifest.version, JSON.parse(read('package.json')).version);
   for (const lang of ['en', 'fr']) {
@@ -103,4 +103,13 @@ test('the keys of the manifest are the keys of the code', () => {
       assert.ok(label.length <= 50 && label.includes('Buienradar.nl'), label);
     }
   }
+});
+
+test('the catalog countries: the Netherlands and Belgium, which needs Gladys >= 5.3.0', () => {
+  assert.deepEqual(manifest.countries, ['NL', 'BE']);
+  const [major, minor] = manifest.gladys_version
+    .match(/>=\s*(\d+)\.(\d+)/)
+    .slice(1)
+    .map(Number);
+  assert.ok(major > 5 || (major === 5 && minor >= 3), 'countries needs Gladys 5.3.0');
 });
