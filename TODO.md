@@ -2,7 +2,7 @@
 
 ## Before announcing
 
-- [ ] Test on a real Gladys 5.1+: the weather widget (current, 5 days, the
+- [ ] Test on a real Gladys 5.3+: the weather widget (current, 5 days, the
       radar with "provider images" on), the "Rain next 2 hours" widget, the
       two rain triggers and the scene action during a real shower.
 - [ ] Check the CI (Docker build, Node 22 and 24), then run the store

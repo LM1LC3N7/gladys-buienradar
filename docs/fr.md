@@ -35,7 +35,7 @@ intégré à Gladys. Le widget météo peut aussi la choisir explicitement.
 
 ## Installation
 
-1. Installez l'intégration depuis le catalogue de Gladys (Gladys 5.1 ou
+1. Installez l'intégration depuis le catalogue de Gladys (Gladys 5.3 ou
    plus récent) et acceptez l'accès à la **position de vos maisons** : les
    déclencheurs de pluie, l'action de scène et le widget les surveillent.
 2. Vérifiez que votre maison est placée sur la carte (**Paramètres →
