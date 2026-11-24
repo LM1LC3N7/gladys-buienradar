@@ -38,3 +38,13 @@
   output for Dutch speakers.
 - Belgian stations (KMI/IRM open data) for the current weather in southern
   Belgium, where the nearest Dutch station is too far.
+
+## Decisions
+
+- **SDK `^0.16.1`** (2026-11-24, migration wave 9): it adds the ai, tts and
+  music types, and its fake Gladys refuses a feature without a name, boolean
+  `read_only`/`has_feedback` or finite `min`/`max`; no effect here (no device: a
+  weather provider answering `onWeatherGet`, so no feature and no
+  `poll_frequency`). `npm test` runs with `--test-timeout=60000`. `countries`
+  and `gladys_version >= 5.3.0` came with the countries PR (#3); `keywords`
+  waits until Gladys 5.3 is widespread.

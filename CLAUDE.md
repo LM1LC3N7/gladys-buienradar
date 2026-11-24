@@ -8,7 +8,7 @@ human contributors.
 A Gladys Assistant **external integration** of type `weather`: a Node.js
 service (Node 22+, ESM, no build step) in its own sandboxed Docker
 container, talking to Gladys through `@gladysassistant/integration-sdk`
-(v0.15). It answers `onWeatherGet` with the pivot weather format from the
+(v0.16). It answers `onWeatherGet` with the pivot weather format from the
 public **Buienradar** feed (the nearest station for the current weather,
 the five-day forecast), serves the Buienradar radar maps as provider
 images, and watches the 2-hour rain forecast of the located houses for two
@@ -23,7 +23,7 @@ triggers, the scene action and the widget.
 
 ```bash
 npm install
-npm test                                  # node --test, the built-in runner
+npm test                                  # node --test --test-timeout=60000
 npm run lint                              # ESLint
 npm run format:check                      # Prettier, as the CI runs it
 npm run format                            # Prettier, fix in place
