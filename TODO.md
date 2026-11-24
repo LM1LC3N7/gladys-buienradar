@@ -48,3 +48,7 @@
   `poll_frequency`). `npm test` runs with `--test-timeout=60000`. `countries`
   and `gladys_version >= 5.3.0` came with the countries PR (#3); `keywords`
   waits until Gladys 5.3 is widespread.
+
+## Next patch
+
+- Migration review w9 r1 minors (`_lots/migration-reviews/w9-gladys-buienradar-r1.md`): the README `npm test` line omits `--test-timeout=60000`.
