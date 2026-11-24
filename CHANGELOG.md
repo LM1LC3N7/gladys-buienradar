@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-11-24
+
 ### Changed
 
 - Integration SDK 0.16 (no change for the weather).
@@ -41,5 +43,6 @@ the notes of the version's GitHub Release.
   5-minute bars, credited "Data: Buienradar.nl".
 - "Test Buienradar" button: the station and the rain forecast of each house.
 
-[Unreleased]: https://github.com/LM1LC3N7/gladys-buienradar/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/LM1LC3N7/gladys-buienradar/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/LM1LC3N7/gladys-buienradar/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/LM1LC3N7/gladys-buienradar/releases/tag/v0.1.1
